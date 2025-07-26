@@ -5,7 +5,7 @@ import ChatWindow from './components/ChatWindow';
 import { useChat } from './contexts/ChatContext';
 
 const ChatApp: React.FC = () => {
-  const { state, sendMessage, startNewConversation } = useChat();
+  const { state, sendMessage, startNewConversation, loadConversation } = useChat();
 
   return (
     <ChatWindow
@@ -14,6 +14,9 @@ const ChatApp: React.FC = () => {
       isLoading={state.isLoading}
       title="E-commerce AI Assistant"
       onNewConversation={startNewConversation}
+      conversations={state.conversations}
+      currentConversationId={state.currentConversationId}
+      onSelectConversation={loadConversation}
     />
   );
 };

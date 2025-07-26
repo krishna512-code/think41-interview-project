@@ -124,12 +124,32 @@ export const ChatProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       dispatch({ type: 'SET_MESSAGES', payload: conversation.messages });
       dispatch({ type: 'SET_CONVERSATION_ID', payload: conversationId });
       
+      // Update conversations list with the loaded conversation
+      const updatedConversations = state.conversations.map(conv => 
+        conv.conversation_id === conversationId ? conversation : conv
+      );
+      dispatch({ type: 'SET_CONVERSATIONS', payload: updatedConversations });
+      
     } catch (error) {
       console.error('Error loading conversation:', error);
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
   };
+
+  // Load user conversations on mount
+  React.useEffect(() => {
+    const loadUserConversations = async () => {
+      try {
+        const conversations = await chatAPI.getUserConversations(userId);
+        dispatch({ type: 'SET_CONVERSATIONS', payload: conversations });
+      } catch (error) {
+        console.error('Error loading user conversations:', error);
+      }
+    };
+
+    loadUserConversations();
+  }, [userId]);
 
   const setUserInput = (input: string) => {
     dispatch({ type: 'SET_USER_INPUT', payload: input });
