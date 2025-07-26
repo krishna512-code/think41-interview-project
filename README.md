@@ -3,11 +3,12 @@
 This is the implementation for the Think41 interview assignment - a conversational AI agent for e-commerce.
 
 ## Tech Stack
-- **Backend**: FastAPI, SQLAlchemy, SQLite/PostgreSQL
-- **Frontend**: React 18, TypeScript, CSS3
+- **Backend**: FastAPI, SQLAlchemy, PostgreSQL
+- **Frontend**: React 18, TypeScript, CSS3, Nginx
 - **LLM**: Groq API (Llama 3 model)
-- **Database**: SQLite (development), PostgreSQL (production ready)
+- **Database**: PostgreSQL
 - **Data Processing**: Pandas
+- **Containerization**: Docker, Docker Compose
 
 ## Project Structure
 ```
@@ -16,11 +17,14 @@ think41-interview-project/
 │   ├── app/                # FastAPI application
 │   ├── scripts/            # Data ingestion scripts
 │   ├── data/               # Sample data
+│   ├── Dockerfile          # Dockerfile for backend
 │   └── README.md           # Backend documentation
 ├── frontend/                # React frontend application
 │   ├── src/                # React source code
 │   ├── public/             # Static assets
+│   ├── Dockerfile          # Dockerfile for frontend
 │   └── README.md           # Frontend documentation
+├── docker-compose.yml      # Docker Compose file
 └── README.md               # This file
 ```
 
@@ -32,16 +36,19 @@ think41-interview-project/
 - ✅ **Milestone 6**: Core Chat UI Components
 - ✅ **Milestone 7**: Client-Side State Management
 - ✅ **Milestone 8**: Conversation History Panel
+- ✅ **Milestone 9**: Full-Stack Integration
+- ✅ **Milestone 10**: Dockerization
 
 ## Features Implemented
 
 ### Backend Service
-- **Database Setup**: SQLite database with product catalog
+- **Database Setup**: PostgreSQL database with product catalog
 - **Data Ingestion**: CSV data loading script
 - **Robust Schema**: Support for users, conversations, and messages
 - **Core Chat API**: RESTful chat endpoint with conversation management
 - **LLM Integration**: Groq API integration with fallback mock responses
 - **Product Search**: Intelligent product search and recommendations
+- **CORS Configuration**: Enabled for frontend communication
 
 ### Frontend Application
 - **Modern UI Components**: Clean, responsive design with smooth animations
@@ -57,56 +64,29 @@ think41-interview-project/
 - `GET /api/conversations/{id}` - Conversation history
 - `GET /api/users/{id}/conversations` - User conversations
 
-## Quick Start
+## Quick Start (Docker Compose)
 
-### Backend Setup
-```bash
-git clone https://github.com/krishna512-code/think41-interview-project.git
-cd think41-interview-project/backend
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/krishna512-code/think41-interview-project.git
+   cd think41-interview-project
+   ```
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+2. **Build and run the containers:**
+   ```bash
+   docker-compose up --build
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+This will build the backend and frontend images, start the database, backend, and frontend services. The frontend will be accessible at `http://localhost:3000`.
 
-# Load sample data
-python scripts/load_data.py
-
-# Start server
-python run_server.py
-```
-
-The backend will be available at `http://localhost:8000`
-
-### Frontend Setup
-```bash
-cd ../frontend
-
-# Install dependencies
-npm install
-
-# Start development server
-npm start
-```
-
-The frontend will be available at `http://localhost:3000`
-
-### Test the Application
-```bash
-# Backend health check
-curl http://localhost:8000/health
-
-# Backend chat API
-curl -X POST "http://localhost:8000/api/chat" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "I need a laptop", "user_id": "user123"}'
-```
+3. **Load sample data (if needed):**
+   You can execute the load data script within the backend container:
+   ```bash
+   docker-compose exec backend python scripts/load_data.py
+   ```
 
 ## Documentation
 - [Backend Documentation](backend/README.md) - Detailed backend setup and API documentation
 - [Frontend Documentation](frontend/README.md) - Frontend setup and component documentation
 
 ## I have completed all milestones and am ready to move forward.
-

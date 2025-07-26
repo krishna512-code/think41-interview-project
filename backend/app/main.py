@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 import uuid
@@ -21,6 +22,20 @@ from .llm_service import LLMService
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Conversational AI Backend", version="1.0.0")
+
+# Add CORS middleware
+origins = [
+    "http://localhost:3000",  # Allow frontend origin
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Initialize LLM service
 llm_service = LLMService()
