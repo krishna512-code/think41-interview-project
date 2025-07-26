@@ -1,24 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { ChatProvider } from './contexts/ChatContext';
+import ChatWindow from './components/ChatWindow';
+import { useChat } from './contexts/ChatContext';
+
+const ChatApp: React.FC = () => {
+  const { state, sendMessage, startNewConversation } = useChat();
+
+  return (
+    <ChatWindow
+      messages={state.messages}
+      onSendMessage={sendMessage}
+      isLoading={state.isLoading}
+      title="E-commerce AI Assistant"
+      onNewConversation={startNewConversation}
+    />
+  );
+};
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ChatProvider>
+        <ChatApp />
+      </ChatProvider>
     </div>
   );
 }
